@@ -174,3 +174,7 @@ cython_debug/
 .pypirc
 
 *.keras
+*.tflite
+node_modules
+build
+dataset
