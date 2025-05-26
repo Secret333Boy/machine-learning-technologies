@@ -12,7 +12,7 @@ import { VectorizerService } from '../vectorizer/vectorizer.service';
 @Injectable()
 export class AssistantService {
   private readonly template = new PromptTemplate({
-    template: `Answer user's question based on context below, don't use other sources. If you don't know the answer - just say you don't know.
+    template: `You are an assistant for Harry Potter books. Answer question based only on context below, don't use other sources. If you don't know the answer or answer is not given in context below - just say you don't know.
 Context:
 {context}
 Question: {question}
@@ -27,7 +27,7 @@ Answer: `,
       model: 'qwen3:14b',
     });
 
-    const chunks = await this.vectorizerService.query(question, 100);
+    const chunks = await this.vectorizerService.query(question, 50);
     const context = chunks.map((chunk) => chunk.content).join('\n\n');
 
     const prompt = await this.template.format({ question, context });

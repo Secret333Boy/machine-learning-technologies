@@ -23,8 +23,6 @@ const start = async () => {
         body: formData,
       });
 
-      console.log(res);
-
       if (!res.ok) {
         throw new Error(await res.text());
       }
