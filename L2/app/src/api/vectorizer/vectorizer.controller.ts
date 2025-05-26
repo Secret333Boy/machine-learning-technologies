@@ -1,6 +1,9 @@
 import {
   Controller,
+  Get,
+  ParseIntPipe,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,8 +20,12 @@ export class VectorizerController {
     return this.vectorizerService.addDocument(file);
   }
 
-  @Post('/query')
-  public async query() {
-    return this.vectorizerService.query();
+  @Get('/query')
+  public async query(
+    @Query('search') search: string,
+    @Query('take', ParseIntPipe) take: number,
+    @Query('skip', ParseIntPipe) skip: number,
+  ) {
+    return this.vectorizerService.query(search, take, skip);
   }
 }

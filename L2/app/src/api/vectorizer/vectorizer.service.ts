@@ -4,7 +4,7 @@ import { OllamaEmbeddings } from '@langchain/ollama';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TokenTextSplitter } from '@langchain/textsplitters';
 import { randomUUID } from 'crypto';
-import { Prisma } from 'prisma/generated-client';
+import { DocumentChunk, Prisma } from 'prisma/generated-client';
 
 @Injectable()
 export class VectorizerService {
@@ -68,5 +68,12 @@ export class VectorizerService {
       .$queryRaw`INSERT INTO "DocumentChunk" (id, content, vector) VALUES ${Prisma.join(valuesListSqlPart)}`;
   }
 
-  public async query() {}
+  public async query(search = '', take = 100, skip = 0) {
+    const vector = await this.embeddings.embedQuery(search);
+
+    const results: DocumentChunk[] = await this.prisma
+      .$queryRaw`SELECT dc.id, dc.content FROM "DocumentChunk" dc ORDER BY dc.vector <=> ${`[${vector.toString()}]`}::vector LIMIT ${take} OFFSET ${skip}`;
+
+    return results;
+  }
 }

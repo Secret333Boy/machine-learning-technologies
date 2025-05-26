@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const start = async () => {
-  const documentsPath = path.join(__dirname, "./chess-docs");
+  const documentsPath = path.join(__dirname, "./harry-potter-docs");
 
   const docsPaths = fs.globSync(`${documentsPath}/**/*.txt`);
 
